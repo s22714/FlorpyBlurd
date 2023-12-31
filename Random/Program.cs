@@ -89,6 +89,8 @@ void DrawScreen()
     if(pos >= height || pos < 0)
     {
         Menu.GameOver(score);
+        t.Interrupt();
+        t2.Interrupt();
     }
 
     for (int x = 0; x < width; x++)
@@ -118,7 +120,12 @@ void DrawScreen()
             }
             if(x == 10)
             {
-                if (!(pos <= height - Int32.Parse(sciany[x, 1]) - 1 && pos >= height - Int32.Parse(sciany[x, 1]) - 1 - 6)) Menu.GameOver(score);
+                if (!(pos <= height - Int32.Parse(sciany[x, 1]) - 1 && pos >= height - Int32.Parse(sciany[x, 1]) - 1 - 6))
+                {
+                    Menu.GameOver(score);
+                    t.Interrupt();
+                    t2.Interrupt();
+                }
                 else score++;
             }
         }
