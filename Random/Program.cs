@@ -25,7 +25,7 @@ int height = 28;
 
 Console.SetWindowSize(1, 1);
 Console.SetBufferSize(width, height);
-Console.SetWindowSize(width, height);
+Console.SetWindowSize(width+10, height+2);
 
 var rnd = new Random();
 
@@ -34,7 +34,7 @@ string[,] sciany = new string[width,2];
 sciany[width - 1,0] = "#";
 sciany[width - 1, 1] = "4";
 
-int interval = 40;
+int interval = 70;
 int drawWall = 0;
 
 int pos = 10;
@@ -78,7 +78,7 @@ while (true)
     {
         drawWall = 0;
         sciany[width - 1, 0] = "#";
-        sciany[width - 1, 1] = rnd.Next(12,height-8).ToString();
+        sciany[width - 1, 1] = rnd.Next(4,height-8).ToString();
     }
     
 }
@@ -88,9 +88,9 @@ void DrawScreen()
 
     if(pos >= height || pos < 0)
     {
-        Menu.GameOver(score);
         t.Interrupt();
         t2.Interrupt();
+        Menu.GameOver(score);
     }
 
     for (int x = 0; x < width; x++)
@@ -115,23 +115,23 @@ void DrawScreen()
 
             for (int y = height - 1; y > 0; y--)
             {
-                if(!(y <= height - Int32.Parse(sciany[x, 1]) - 1 && y >= height - Int32.Parse(sciany[x, 1]) - 1 - 4 ))
+                if(!(y <= height - Int32.Parse(sciany[x, 1]) - 1 && y >= height - Int32.Parse(sciany[x, 1]) - 1 - 6 ))
                     WriteAt("#", x, y);
             }
             if(x == 10)
             {
                 if (!(pos <= height - Int32.Parse(sciany[x, 1]) - 1 && pos >= height - Int32.Parse(sciany[x, 1]) - 1 - 6))
                 {
-                    Menu.GameOver(score);
                     t.Interrupt();
                     t2.Interrupt();
+                    Menu.GameOver(score);
                 }
                 else score++;
             }
         }
     }
     
-    Thread.Sleep(10);
+    Thread.Sleep(2);
     Console.Clear();
     origRow = Console.CursorTop;
     origCol = Console.CursorLeft;
@@ -141,16 +141,31 @@ void PlayerPos()
 {
     while (true)
     {
-        if (Console.ReadKey().Key == ConsoleKey.Spacebar) pos-=4;
+        try
+        {
+            if (Console.ReadKey().Key == ConsoleKey.Spacebar) pos-=4;
+        }catch(ThreadInterruptedException e)
+        {
+            break;
+        }
+        
     }
     
 }
 
 void PlayerFall()
 {
+    
     while (true)
     {
-        pos++;
-        Thread.Sleep(100);
+        try
+        {
+            pos++;
+            Thread.Sleep(90);
+        }catch(ThreadInterruptedException e)
+        {
+            break;
+        }
+        
     }
 }
