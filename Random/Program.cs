@@ -146,7 +146,7 @@ void PlayerPos()
             if (Console.ReadKey().Key == ConsoleKey.Spacebar) pos-=4;
         }catch(ThreadInterruptedException e)
         {
-            break;
+            return;
         }
         
     }
@@ -164,7 +164,7 @@ void PlayerFall()
             Thread.Sleep(90);
         }catch(ThreadInterruptedException e)
         {
-            break;
+            return;
         }
         
     }
